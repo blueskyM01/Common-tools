@@ -45,7 +45,7 @@ class tfrecords_maker:
                         example = tf.train.Example(features = tf.train.Features(
                             feature = {
                                 'image/encoded' : tf.train.Feature(bytes_list = tf.train.BytesList(value = [image])),
-                                'image/label' : tf.train.Feature(float_list = tf.train.FloatList(value = [labels[index]])),
+                                'image/label' : tf.train.Feature(int64_list = tf.train.Int64List(value = [labels[index]])),
                             }
                         ))
                         record_writer.write(example.SerializeToString())
@@ -73,12 +73,16 @@ class tfrecords_maker:
             label_list.append(int(label[i].lstrip("b'").rstrip("'")))
         return filename_list, label_list
 
-dataset_dir = '/home/yang/study/datasetandparam/parachute'
-dataset_name = 'my_cifar-100'
-label_dir = '/home/yang/study/datasetandparam/parachute'
-label_name = 'my_cifar-100.txt'
-tfrecord_path = '/home/yang/study/datasetandparam/parachute'
-tfrecord_folder_name = 'cifar-100_tfrecords'
-name_tfrecords = 'cifar_image'
-tensor_file_maker = tfrecords_maker(dataset_dir, dataset_name, label_dir, label_name)
-tensor_file_maker.convert_to_tfrecord(tfrecord_path, tfrecord_folder_name, 200, name_tfrecords)
+
+
+
+if __name__ == '__main__':
+    dataset_dir = '/home/yang/study/datasetandparam/parachute'
+    dataset_name = 'my_cifar-100'
+    label_dir = '/home/yang/study/datasetandparam/parachute'
+    label_name = 'my_cifar-100.txt'
+    tfrecord_path = '/home/yang/study/datasetandparam/parachute'
+    tfrecord_folder_name = 'cifar-100_tfrecords'
+    name_tfrecords = 'cifar_image'
+    tensor_file_maker = tfrecords_maker(dataset_dir, dataset_name, label_dir, label_name)
+    tensor_file_maker.convert_to_tfrecord(tfrecord_path, tfrecord_folder_name, 200, name_tfrecords)
