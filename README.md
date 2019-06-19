@@ -45,7 +45,7 @@
                             .
                             .
 ```
-2) `使用方法:` 直接运行 [tfrecords_maker.py]()  
+2) `使用方法:` 直接运行 [tfrecords_maker.py](https://github.com/blueskyM01/Common-tools/blob/master/classify%20dataset%20label%20maker/tfrecords_maker.py)  
 修改对应的参数即可
 ```
 dataset_dir = '/home/yang/study/datasetandparam/parachute'
@@ -58,9 +58,9 @@ name_tfrecords = 'cifar_image'
 tensor_file_maker = tfrecords_maker(dataset_dir, dataset_name, label_dir, label_name)
 tensor_file_maker.convert_to_tfrecord(tfrecord_path, tfrecord_folder_name, 200, name_tfrecords)                
 ```
-### 1.3 [DataSetReader.py]()
+### 1.3 [DataSetReader.py](https://github.com/blueskyM01/Common-tools/blob/master/classify%20dataset%20label%20maker/DataSetReader.py)
 `功能：`tensorflow读取tfrecords文件                                 
-1) `使用方法:` 直接运行 [DataSetReader.py]()  
+1) `使用方法:` 直接运行 [DataSetReader.py](https://github.com/blueskyM01/Common-tools/blob/master/classify%20dataset%20label%20maker/DataSetReader.py)  
 修改对应的参数即可   
 ````
 tfrecords_dir = '/home/yang/study/datasetandparam/parachute'
