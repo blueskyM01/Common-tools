@@ -86,8 +86,42 @@
             cv2.waitKey(0)
 ````
 ## 2. Detection dataset convert to tfrecords 
-### 2.1 [PASCAL VOC dataset conver to tfrecords]() 
+### 2.1 PASCAL VOC dataset conver to tfrecords
+> 注意：img_format的格式，看具体的文件加里面的图像格式(需根据实际情况改动)， 除此之外，这个文件无需在改动  
+> 在[PASCAL_VOC_tfrecords_maker.py](https://github.com/blueskyM01/Common-tools/blob/master/detection%20dataset%20maker/PASCAL_VOC_tfrecords_maker.py) 文件中直接运行，修改下面的参数即可
 
+    dataset_dir = '/media/yang/F/DataSet/Detection/VOCtrainval_06-Nov-2007/VOCdevkit'
+    dataset_name = 'VOC2007'
+    xml_folder_name = 'Annotations'
+    image_folder_name = 'JPEGImages'
+    tfrecords_folder_save_dir = '/media/yang/F/DataSet/Detection/Terecords_VOC'
+    tfrecords_folder_save_name = 'VOC_2007'
+    tfrecords_file_save_name = 'pascal_train'
+    img_format = '.jpg'
+    maker = PASCAL_VOC_Tfrecords_maker(dataset_dir, dataset_name, xml_folder_name, image_folder_name,
+                                       tfrecords_folder_save_dir, tfrecords_folder_save_name,
+                                       tfrecords_file_save_name, img_format)
+    maker.convert_pascal_to_tfrecord()
+
+
+
+### 2.2 [DetectDatasetReader.py](https://github.com/blueskyM01/Common-tools/blob/master/detection%20dataset%20maker/DetecteDatasetReader.py) 直接运行该文件
+````
+注意： 1. batch size只能为 1, 因为每张图片的目标个数不一样，即ground true box的个数不一样。 如果是batch size不为1, tensorflow无法读出
+      2. 输出图像的范围为[-1,1], tf.float32型
+      3. image_size这个参数未使用
+      4. 图像未做预处理
+````
+修改下面的参数即可  
+
+    tfrecords_dir = '/media/yang/F/DataSet/Detection/Terecords_VOC'
+    tfrecords_name = 'VOC_2007'
+    image_size = (224, 224)
+    dataset = Reader(tfrecords_dir, tfrecords_name, image_size)
+    one_element = dataset.build_dataset(batch_size=1, epoch=1, shuffle_num=1000, is_train=False)
+
+    with tf.Session() as sess:
+        img_name, image, gtboxes_and_label, num_objects = sess.run(one_element)
 
 
 
