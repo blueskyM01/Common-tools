@@ -37,7 +37,7 @@ def m4_face_label_maker(filepath,savefilename):
         imagename = []
         foldername = filename + name
         imagename = imagename + glob(foldername + '/*.jpg') + glob(foldername + '/*.png') \
-               + glob(foldername + '/*.jpeg') + glob(foldername + '/*.bmp')
+               + glob(foldername + '/*.jpeg') + glob(foldername + '/*.bmp') + glob(foldername + '/*.JPEG')
 
         for i in range(len(imagename)):
             label = [name,imagename[i].split('/')[-1],idx]

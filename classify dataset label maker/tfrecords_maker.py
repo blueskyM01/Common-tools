@@ -95,12 +95,12 @@ class tfrecords_maker:
 
 
 if __name__ == '__main__':
-    dataset_dir = '/media/yang/F/DataSet/parachute'
-    dataset_name = 'my_cifar-100'
-    label_dir = '/media/yang/F/DataSet/parachute'
-    label_name = 'my_cifar-100.txt'
-    tfrecord_path = '/media/yang/F/DataSet/parachute'
-    tfrecord_folder_name = 'cifar-100_tfrecords'
-    name_tfrecords = 'cifar_image'
+    dataset_dir = '/media/yang/F/DataSet/ImageNet'
+    dataset_name = 'image_train_jieya'
+    label_dir = '/media/yang/F/DataSet/ImageNet'
+    label_name = 'image_train_jieya.txt'
+    tfrecord_path = '/media/yang/F/DataSet/ImageNet'
+    tfrecord_folder_name = 'tfrecords_imagenet'
+    name_tfrecords = 'imagenet'
     tensor_file_maker = tfrecords_maker(dataset_dir, dataset_name, label_dir, label_name)
-    tensor_file_maker.convert_to_tfrecord(tfrecord_path, tfrecord_folder_name, 200, name_tfrecords)
+    tensor_file_maker.convert_to_tfrecord(tfrecord_path, tfrecord_folder_name, 1000, name_tfrecords)
