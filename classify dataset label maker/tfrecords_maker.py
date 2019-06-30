@@ -51,7 +51,25 @@ class tfrecords_maker:
                         record_writer.write(example.SerializeToString())
                         if index % 10 == 0:
                             print('Processed {} of {} images'.format(index + 1, num_image))
-                print(output_file + ' is ok....')
+
+        output_file = os.path.join(tfrecord_path, tfrecord_folder_name,
+                                   str(num_tfrecords) + '_' + name_tfrecords + '.tfrecords')
+        with tf.python_io.TFRecordWriter(output_file) as record_writer:
+            for index in range(num_tfrecords * images_num, num_image):
+                with tf.gfile.FastGFile(image_data[index], 'rb') as file:
+                    image = file.read()
+                    example = tf.train.Example(features=tf.train.Features(
+                        feature={
+                            'image/encoded': tf.train.Feature(bytes_list=tf.train.BytesList(value=[image])),
+                            'image/label': tf.train.Feature(
+                                int64_list=tf.train.Int64List(value=[labels[index]])),
+                        }
+                    ))
+                    record_writer.write(example.SerializeToString())
+                    if index % 10 == 0:
+                        print('Processed {} of {} images'.format(index + 1, num_image))
+
+        print(output_file + ' is ok....')
 
     def m4_get_file_label_name(self, label_dir, label_name, dataset_dir, dataset_name):
         '''
@@ -77,11 +95,11 @@ class tfrecords_maker:
 
 
 if __name__ == '__main__':
-    dataset_dir = '/home/yang/study/datasetandparam/parachute'
+    dataset_dir = '/media/yang/F/DataSet/parachute'
     dataset_name = 'my_cifar-100'
-    label_dir = '/home/yang/study/datasetandparam/parachute'
+    label_dir = '/media/yang/F/DataSet/parachute'
     label_name = 'my_cifar-100.txt'
-    tfrecord_path = '/home/yang/study/datasetandparam/parachute'
+    tfrecord_path = '/media/yang/F/DataSet/parachute'
     tfrecord_folder_name = 'cifar-100_tfrecords'
     name_tfrecords = 'cifar_image'
     tensor_file_maker = tfrecords_maker(dataset_dir, dataset_name, label_dir, label_name)
