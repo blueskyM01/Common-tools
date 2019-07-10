@@ -85,6 +85,21 @@
                 cv2.imshow(str(count), image)
             cv2.waitKey(0)
 ````
+### 1.4 做测试时将 `验证集的标签` 与 `训练集的标签` 变为一致
+注意： 先要使用[dataset_label_maker.sh](https://github.com/blueskyM01/Common-tools/blob/master/classify%20dataset%20label%20maker/m4_Dataset_Label_Maker.py)生成label的`.txt`文件 
+1) `使用方法:` 直接运行 [m4_make_val.sh](https://github.com/blueskyM01/Common-tools/blob/master/classify%20dataset%20label%20maker/m4_make_val.sh)  
+修改对应的参数即可   
+````
+    python m4_make_val.py \
+    --train_label_dir='/media/yang/F/DataSet/ImageNet' \
+    --train_label_name='image_train_jieya.txt' \
+    --val_label_dir='/media/yang/F/DataSet/ImageNet' \
+    --val_label_name='val.txt' \
+    --save_file_dir='/media/yang/F/DataSet/ImageNet' \
+    --save_file_name='val_t.txt'
+````
+
+
 ## 2. Detection dataset convert to tfrecords 
 ### 2.1 PASCAL VOC dataset conver to tfrecords
 > 注意：img_format的格式，看具体的文件加里面的图像格式(需根据实际情况改动)， 除此之外，这个文件无需在改动  
