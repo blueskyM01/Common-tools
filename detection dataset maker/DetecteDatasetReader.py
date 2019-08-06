@@ -74,7 +74,7 @@ class Reader:
         dataset = tf.data.TFRecordDataset(filenames = self.TfrecordFile)
         dataset = dataset.map(self.parser, num_parallel_calls = 4) #将 num_parallel_calls 设置为 CPU 的核心数。例如，如果 CPU 有四个核，将 num_parallel_calls 设置为 4 将会很高效。另一方面，设置 num_parallel_calls 大于 CPU 的核心数，能够导致低效的调度，导致输入管道速度下降。
         if is_train:
-            dataset = dataset.shuffle(shuffle_num).batch(batch_size).repeat(epoch)
+            dataset = dataset.shuffle(shuffle_num).batch(batch_size).repeat(epoch) # shuffle_num读取多少张到内存，并打乱， 但如果shuffle_num=1，则不打乱，以为只读取了一张，无法打乱
         else:
             dataset = dataset.batch(batch_size).repeat(epoch)
         # dataset = dataset.repeat().batch(batch_size).prefetch(batch_size)
