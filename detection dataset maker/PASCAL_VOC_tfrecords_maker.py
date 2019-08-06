@@ -141,11 +141,11 @@ class PASCAL_VOC_Tfrecords_maker:
 
 
 if __name__ == '__main__':
-    dataset_dir = '/media/yang/F/DataSet/Detection/VOCtrainval_06-Nov-2007/VOCdevkit'
+    dataset_dir = '/media/yang/F/DataSet/detection/VOCdevkit'
     dataset_name = 'VOC2007'
     xml_folder_name = 'Annotations'
     image_folder_name = 'JPEGImages'
-    tfrecords_folder_save_dir = '/media/yang/F/DataSet/Detection/Terecords_VOC'
+    tfrecords_folder_save_dir = '/media/yang/F/DataSet/detection/Terecords_VOC'
     tfrecords_folder_save_name = 'VOC_2007'
     tfrecords_file_save_name = 'pascal_train'
     img_format = '.jpg'
