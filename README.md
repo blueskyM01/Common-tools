@@ -137,6 +137,124 @@
 
     with tf.Session() as sess:
         img_name, image, gtboxes_and_label, num_objects = sess.run(one_element)
-
-
-
+        
+## 3. COCO数据集的使用  
+* 1. 目标检测
+    * 训练：`annotations_trainval2017.zip`, `train2017.zip`
+        * 解压`annotations_trainval2017.zip`，得到`annotations_trainval2017/annotations`文件夹, 有以下文件：  
+            * captions_train2017.json
+            * captions_val2017.json
+            * instances_train2017.json, 目标检测用， 训练集
+            * instances_val2017.json, 目标检测用， 验证集
+            * person_keypoints_train2017.json
+            * person_keypoints_val2017.json
+        * 解压`train2017.zip`，得到`train2017`文件夹， 文件夹下的文件如下：  
+            ````
+            xxxx.jpg
+               .
+               .
+               .
+               .
+            xxxx.jpg
+            ````
+        * instances_train2017.json, instances_val2017.json的文件是如下这个字典：  
+            * 可以看出他有5个键： 'info', 'licenses', 'images', 'annotations', 'categories'， 其中'licenses', 'images', 'annotations', 'categories'值的type是list。  
+            images数组、annotations数组、categories数组的元素数量是相等的，等于图片的数量。
+            ````
+                {
+                "info": info,
+                "licenses": [license], 
+                "images": [image],
+                "annotations": [annotation],
+                "categories": [category]
+                }
+            ````  
+            * 'info'的值也是个字典，如下:
+            ````
+            info:
+                {
+                "year": int,
+                "version": str,
+                "description": str,
+                "contributor": str,
+                "url": str,
+                "date_created": datetime,
+                }
+            ````
+            实例：
+            ````
+            "info":
+                {
+                "description":"This is stable 1.0 version of the 2014 MS COCO dataset.",
+                "url":"http:\/\/mscoco.org",
+                "version":"1.0","year":2014,
+                "contributor":"Microsoft COCO group",
+                "date_created":"2015-01-27 09:11:52.357475"
+                }
+            ````
+            * 'licenses'的值也是个字典，如下:
+            ````
+            license:
+                {
+                "id": int,
+                "name": str,
+                "url": str,
+                }
+            ````
+            实例：
+            ````
+            "license":
+                {
+                "url":"http:\/\/creativecommons.org\/licenses\/by-nc-sa\/2.0\/",
+                "id":1,
+                "name":"Attribution-NonCommercial-ShareAlike License"
+                }
+            ````
+            * 'images'的值也是个字典，如下:
+            ````
+            image:
+                {
+                "id": int,
+                "width": int,
+                "height": int,
+                "file_name": str,
+                "license": int,
+                "flickr_url": str,
+                "coco_url": str,
+                "date_captured": datetime,
+                }
+            ````
+            * 'annotations'的值也是个字典，如下:
+            ````
+            annotation:
+                {
+                "id": int,
+                "image_id": int, # image_id + ‘.jpg’就是图像的名称, 若image_id不足12位数， 则前面补0
+                "category_id": int,
+                "segmentation": RLE or [polygon],
+                "area": float,
+                "bbox": [x,y,width,height],
+                "iscrowd": 0 or 1,
+                }
+            ````
+            * 'categories'的值也是个字典，如下:
+            ````
+            category:
+                {
+                "id": int,
+                "name": str,
+                "supercategory": str,
+                }
+            ````
+    * 验证
+* 2. 制作标签：  
+    `Generate train.txt/val.txt/test.txt files One line for one image, in the format like：  
+     image_index, image_absolute_path, img_width, img_height, box_1, box_2, ... box_n.  
+     Box_x format: label_index x_min y_min x_max y_max.
+                   (The origin of coordinates is at the left top corner, left top => (xmin, ymin), right bottom => (xmax, ymax).)
+     image_index: is the line index which starts from zero.  
+     label_index: is in range [0, class_num - 1].  
+     For example:  
+     0 xxx/xxx/a.jpg 1920 1080 0 453 369 473 391 1 588 245 608 268  
+     1 xxx/xxx/b.jpg 1920 1080 1 466 403 485 422 2 793 300 809 320
+    `
