@@ -247,7 +247,7 @@
                 }
             ````
     * 验证
-* 2. 制作标签：  
+* 2. 制作标签：  修改[COCO_Label_Maker.py]() 中相应的参数，直接运行即可  
     `Generate train.txt/val.txt/test.txt files One line for one image, in the format like：  
      image_index, image_absolute_path, img_width, img_height, box_1, box_2, ... box_n.  
      Box_x format: label_index x_min y_min x_max y_max.

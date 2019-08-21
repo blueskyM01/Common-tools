@@ -67,7 +67,7 @@ def read_annotation(dataset_dir, dataset_name, label_dir, label_name, save_path)
 
 
         # name_box_label_list = []
-        f = open('save_path', 'w')
+        f = open(save_path, 'w')
         counter = 0
         for key in name_box_id.keys():
             elem = []
@@ -95,7 +95,6 @@ def read_annotation(dataset_dir, dataset_name, label_dir, label_name, save_path)
                 boxes.append(y_max)
 
             elem = elem + boxes
-            print(elem)
             for index in range(len(elem)):
                 if index == 1:
                     f.write(elem[index] + ' ')
@@ -109,7 +108,7 @@ def read_annotation(dataset_dir, dataset_name, label_dir, label_name, save_path)
         f.close()
 
 read_annotation(dataset_dir='/media/yang/F/DataSet/Tracking',
-                dataset_name='train2017',
+                dataset_name='val2017',
                 label_dir='/media/yang/F/DataSet/Tracking/annotations_trainval2017/annotations',
-                label_name='instances_train2017.json',
-                save_path='/media/yang/F/DataSet/Tracking/cocolabel.txt')
+                label_name='instances_val2017.json',
+                save_path='/media/yang/F/DataSet/Tracking/val.txt')
