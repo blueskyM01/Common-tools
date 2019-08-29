@@ -48,4 +48,9 @@
                               .
                               .  
 ## 2. 最终包含所有label的json文件生成
-* 找到[Generate_Final_Json.py](https://github.com/blueskyM01/Common-tools/blob/master/DatasetMaker_610/Generate_Final_Json.py)
+* 找到[Generate_Final_Json.py](https://github.com/blueskyM01/Common-tools/blob/master/DatasetMaker_610/Generate_Final_Json.py)  
+修改对应参数即可：
+    ````
+    All_Label_dir = '/media/yang/F/DataSet/detection/pp_dataset/dataset_610_v1_label' # 格式同README.md中的label的存储格式
+    All_Image_dir = '/media/yang/F/DataSet/detection/pp_dataset/dataset_610_v1' # 注意： 将所有标注的图像拷到同一文件夹下
+    ````
