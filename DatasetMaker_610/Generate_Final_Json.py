@@ -19,12 +19,13 @@ def Generate_Final_Json(Label_dir):
     return final_label
 
 
+All_Label_dir = '/media/yang/F/DataSet/detection/pp_dataset/dataset_610_v1_label' # 格式同README.md中的label的存储格式
+All_Image_dir = '/media/yang/F/DataSet/detection/pp_dataset/dataset_610_v1' # 注意： 将所有标注的图像拷到同一文件夹下
 
-
-final_json = Generate_Final_Json('/media/yang/F/DataSet/detection/pp_dataset/dataset_610_v1_label')
+final_json = Generate_Final_Json(All_Label_dir)
 classes_list = ['Face', 'UAV', 'Plan', 'Parachute']
 for image_name in final_json.keys():
-    image_path = os.path.join('/media/yang/F/DataSet/detection/pp_dataset/dataset_610_v1', image_name)
+    image_path = os.path.join(All_Image_dir, image_name)
     image = cv2.imread(image_path)
     boxes = final_json[image_name]
     for box in boxes:
