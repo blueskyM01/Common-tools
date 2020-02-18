@@ -1,7 +1,8 @@
 import os, json, cv2
 import numpy as np
 from collections import defaultdict
-
+import os
+import argparse
 def read_annotation(dataset_dir, dataset_name, label_dir, label_name, save_path):
     '''
     功能： Generate train.txt/val.txt/test.txt files One line for one image, in the format like：
@@ -107,8 +108,22 @@ def read_annotation(dataset_dir, dataset_name, label_dir, label_name, save_path)
             print('num:', counter)
         f.close()
 
-read_annotation(dataset_dir='/media/yang/F/DataSet/Tracking',
-                dataset_name='val2017',
-                label_dir='/media/yang/F/DataSet/Tracking/annotations_trainval2017/annotations',
-                label_name='instances_val2017.json',
-                save_path='/media/yang/F/DataSet/Tracking/val.txt')
+parser = argparse.ArgumentParser()
+
+# -----------------------------m4_BE_GAN_network-----------------------------
+parser.add_argument("--dataset_dir", default='/media/yang/F/DataSet/Tracking', type=str, help="the dir of dataset")
+parser.add_argument("--dataset_name", default='val2017', type=str, help="the name of dataset")
+parser.add_argument("--label_dir", default='/media/yang/F/DataSet/Tracking/annotations_trainval2017/annotations',
+                    type=str, help="the dir of label")
+parser.add_argument("--label_name", default='instances_val2017.json', type=str, help="the name of label")
+parser.add_argument("--save_path", default='/media/yang/F/DataSet/Tracking/val.txt', type=str,
+                    help="the path to save generate label")
+cfg = parser.parse_args()
+
+read_annotation(dataset_dir=cfg.dataset_dir,
+                dataset_name=cfg.dataset_name,
+                label_dir=cfg.label_dir,
+                label_name=cfg.label_name,
+                save_path=cfg.save_path)
+
+# python COCO_Label_Maker.py --dataset_dir='/gs/home/yangjb/My_Job/dataset/coco' --dataset_name='train2017' --label_dir='/gs/home/yangjb/My_Job/dataset/coco/annotations' --label_name='instances_train2017.json' --save_path='/gs/home/yangjb/My_Job/dataset/coco/trian.txt'
