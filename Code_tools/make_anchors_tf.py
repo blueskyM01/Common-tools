@@ -51,9 +51,9 @@ def enum_scales(base_anchor, anchor_scales):
     :param base_anchor: 一个anchor， [0, 0, 256, 256]
     :param anchor_scales: [0.5, 1., 2.]
     :return: anchor_scales： 面积的尺度， 每个元素的平方就是面积。
-                          [[128, 128, 128, 128],
-                           [256, 256, 256, 256],
-                           [512, 512, 512, 512]]
+                          [[0, 0, 128, 128],
+                           [0, 0, 256, 256],
+                           [0, 0, 512, 512]]
             '''
 
     '''
@@ -64,9 +64,9 @@ def enum_scales(base_anchor, anchor_scales):
                              [1.0, 1.0, 1.0, 1.0],
                              [2.0, 2.0, 2.0, 2.0]]
     3. base_anchor与anchor_scales广播后的点成，得：
-                                                [[128, 128, 128, 128],
-                                                 [256, 256, 256, 256],
-                                                 [512, 512, 512, 512]]
+                                                [[0, 0, 128, 128],
+                                                 [0, 0, 256, 256],
+                                                 [0, 0, 512, 512]]
     '''
     anchor_scales = base_anchor * tf.constant(anchor_scales, dtype=tf.float32, shape=(len(anchor_scales), 1))
 

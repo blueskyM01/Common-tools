@@ -1,50 +1,6 @@
-import tensorflow as tf
 import numpy as np
 import visualize_anchors as vis
-def enum_ratios(anchors, anchor_ratios):
-    '''
-    功能： 求9个anchor的 w 和 h
-    ratio = h /w
-    :param anchors: [[128, 128, 128, 128],
-                     [256, 256, 256, 256],
-                     [512, 512, 512, 512]]
-    :param anchor_ratios: [0.5, 1., 2.]
-    :return: 每个anchor的 w 和 h
-             ws:[[128/sqrt(0.5)], [256/sqrt(0.5)], [512/sqrt(0.5)], [128/sqrt(1.0)], [256/sqrt(1.0)], [512/sqrt(1.0)], [128/sqrt(2.0)], [256/sqrt(2.0)], [512/sqrt(2.0)]]
-             shape: [9,1]
-             hs:[[128×sqrt(0.5)], [256×sqrt(0.5)], [512×sqrt(0.5)], [128×sqrt(1.0)], [256×sqrt(1.0)], [512×sqrt(1.0)], [128×sqrt(2.0)], [256×sqrt(2.0)], [512×sqrt(2.0)]]
-             shape: [9,1]
-    '''
-    ws = anchors[:, 2]  # for base anchor: w == h
-    hs = anchors[:, 3]
 
-    sqrt_ratios = tf.sqrt(tf.constant(anchor_ratios))
-    '''
-    原数组A的shape： (2,3)
-    A[:, tf.newaxis]的shape： (2,1,3)
-    A[tf.newaxis, :]的shape： (1,2,3)
-
-    原数组B的shape： (3,)
-    B[:, tf.newaxis]的shape： (3,1)
-    '''
-    '''
-    sqrt_ratios[:, tf.newaxis]: [[sqrt(0.5)], 
-                                 [sqrt(1.0)],
-                                 [sqrt(2.0)]]
-    sqrt_ratios[:, tf.newaxis]广播后变为：[[sqrt(0.5), sqrt(0.5), sqrt(0.5)],
-                                         [sqrt(1.0), sqrt(1.0), sqrt(1.0)],
-                                         [sqrt(2.0), sqrt(2.0), sqrt(2.0)]]
-    ws/sqrt_ratios[:, tf.newaxis]: [[128/sqrt(0.5), 256/sqrt(0.5), 512/sqrt(0.5)],
-                                    [128/sqrt(1.0), 256/sqrt(1.0), 512/sqrt(1.0)],
-                                    [128/sqrt(2.0), 256/sqrt(2.0), 512/sqrt(2.0)]] 
-    ws最终reshape变为[[128/sqrt(0.5)], [256/sqrt(0.5)], [512/sqrt(0.5)], [128/sqrt(1.0)], [256/sqrt(1.0)], [512/sqrt(1.0)], [128/sqrt(2.0)], [256/sqrt(2.0)], [512/sqrt(2.0)]]
-
-    hs同理          [[128×sqrt(0.5)], [256×sqrt(0.5)], [512×sqrt(0.5)], [128×sqrt(1.0)], [256×sqrt(1.0)], [512×sqrt(1.0)], [128×sqrt(2.0)], [256×sqrt(2.0)], [512×sqrt(2.0)]]
-    '''
-    ws = tf.reshape(ws / sqrt_ratios[:, tf.newaxis], [-1, 1])
-    hs = tf.reshape(hs * sqrt_ratios[:, tf.newaxis], [-1, 1])
-
-    return hs, ws
 
 def enum_scales(base_anchor, anchor_scales):
     '''
@@ -68,9 +24,56 @@ def enum_scales(base_anchor, anchor_scales):
                                                  [256, 256, 256, 256],
                                                  [512, 512, 512, 512]]
     '''
-    anchor_scales = base_anchor * tf.constant(anchor_scales, dtype=tf.float32, shape=(len(anchor_scales), 1))
+    anchor_scales = base_anchor * np.array(anchor_scales, dtype=np.float32).reshape([len(anchor_scales), 1])
 
     return anchor_scales
+
+
+def enum_ratios(anchors, anchor_ratios):
+    '''
+    功能： 求9个anchor的 w 和 h
+    ratio = h /w
+    :param anchors: [[0, 0, 128, 128],
+                     [0, 0, 256, 256],
+                     [0, 0, 512, 512]]
+    :param anchor_ratios: [0.5, 1., 2.]
+    :return: 每个anchor的 w 和 h
+             ws:[[128/sqrt(0.5)], [256/sqrt(0.5)], [512/sqrt(0.5)], [128/sqrt(1.0)], [256/sqrt(1.0)], [512/sqrt(1.0)], [128/sqrt(2.0)], [256/sqrt(2.0)], [512/sqrt(2.0)]]
+             shape: [9,1]
+             hs:[[128×sqrt(0.5)], [256×sqrt(0.5)], [512×sqrt(0.5)], [128×sqrt(1.0)], [256×sqrt(1.0)], [512×sqrt(1.0)], [128×sqrt(2.0)], [256×sqrt(2.0)], [512×sqrt(2.0)]]
+             shape: [9,1]
+    '''
+    ws = anchors[:, 2]  # for base anchor: w == h
+    hs = anchors[:, 3]
+
+    sqrt_ratios = np.sqrt(np.array(anchor_ratios))
+    '''
+    原数组A的shape： (2,3)
+    A[:, np.newaxis]的shape： (2,1,3)
+    A[np.newaxis, :]的shape： (1,2,3)
+
+    原数组B的shape： (3,)
+    B[:, np.newaxis]的shape： (3,1)
+    '''
+    '''
+    sqrt_ratios[:, np.newaxis]: [[sqrt(0.5)], 
+                                 [sqrt(1.0)],
+                                 [sqrt(2.0)]]
+    sqrt_ratios[:, np.newaxis]广播后变为：[[sqrt(0.5), sqrt(0.5), sqrt(0.5)],
+                                         [sqrt(1.0), sqrt(1.0), sqrt(1.0)],
+                                         [sqrt(2.0), sqrt(2.0), sqrt(2.0)]]
+    ws/sqrt_ratios[:, np.newaxis]: [[128/sqrt(0.5), 256/sqrt(0.5), 512/sqrt(0.5)],
+                                    [128/sqrt(1.0), 256/sqrt(1.0), 512/sqrt(1.0)],
+                                    [128/sqrt(2.0), 256/sqrt(2.0), 512/sqrt(2.0)]] 
+    ws最终reshape变为[[128/sqrt(0.5)], [256/sqrt(0.5)], [512/sqrt(0.5)], [128/sqrt(1.0)], [256/sqrt(1.0)], [512/sqrt(1.0)], [128/sqrt(2.0)], [256/sqrt(2.0)], [512/sqrt(2.0)]]
+
+    hs同理          [[128×sqrt(0.5)], [256×sqrt(0.5)], [512×sqrt(0.5)], [128×sqrt(1.0)], [256×sqrt(1.0)], [512×sqrt(1.0)], [128×sqrt(2.0)], [256×sqrt(2.0)], [512×sqrt(2.0)]]
+    '''
+    ws = np.reshape(ws / sqrt_ratios[:, np.newaxis], [-1, 1])
+    hs = np.reshape(hs * sqrt_ratios[:, np.newaxis], [-1, 1])
+
+    return hs, ws
+
 
 def make_anchors(base_anchor_size, anchor_scales, anchor_ratios,
                  featuremap_height, featuremap_width,
@@ -89,7 +92,8 @@ def make_anchors(base_anchor_size, anchor_scales, anchor_ratios,
                       每个anchor表示为：[xmin, ymin. xmax, ymax]
     '''
 
-    base_anchor = tf.constant([0, 0, base_anchor_size, base_anchor_size], tf.float32)  # [x_center, y_center, w, h] [0,0,256,256]
+    base_anchor = np.array([0, 0, base_anchor_size, base_anchor_size],
+                           np.float32)  # [x_center, y_center, w, h] [0,0,256,256]
 
     ws, hs = enum_ratios(enum_scales(base_anchor, anchor_scales),
                          anchor_ratios)  # per locations ws and hs
@@ -99,8 +103,8 @@ def make_anchors(base_anchor_size, anchor_scales, anchor_ratios,
     假设： featuremap_width=2， tf.range(featuremap_width, dtype=tf.float32)： [0,1]
     y_centers=[0,1] * [16] = [0,16]
     '''
-    x_centers = tf.range(featuremap_width, dtype=tf.float32) * stride
-    y_centers = tf.range(featuremap_height, dtype=tf.float32) * stride
+    x_centers = np.arange(featuremap_width, dtype=np.float32) * stride
+    y_centers = np.arange(featuremap_height, dtype=np.float32) * stride
 
     '''
     x_centers, y_centers = tf.meshgrid(x_centers, y_centers)
@@ -109,7 +113,7 @@ def make_anchors(base_anchor_size, anchor_scales, anchor_ratios,
     y_centers: [[ 0, 0,  0],
                 [16,16, 16]]
     '''
-    x_centers, y_centers = tf.meshgrid(x_centers, y_centers)
+    x_centers, y_centers = np.meshgrid(x_centers, y_centers)
 
     '''
     tf.meshgrid(ws, x_centers)
@@ -140,35 +144,36 @@ def make_anchors(base_anchor_size, anchor_scales, anchor_ratios,
                 [16, 16, ..., 0],
                 [16, 16, ..., 0]]6行，9列           
     '''
-    ws, x_centers = tf.meshgrid(ws, x_centers)
-    hs, y_centers = tf.meshgrid(hs, y_centers)
+    ws, x_centers = np.meshgrid(ws, x_centers)
+    hs, y_centers = np.meshgrid(hs, y_centers)
 
     '''
     anchor_centers:
     每行代表： 一个从feature map映射回原图的点（中点）, 共九个（一行的9个坐标都相同）
     '''
-    anchor_centers = tf.stack([x_centers, y_centers], 2)
+    anchor_centers = np.stack([x_centers, y_centers], 2)
     '''
     按照从上像下，从左到右的顺序展开
     '''
-    anchor_centers = tf.reshape(anchor_centers, [-1, 2])
+    anchor_centers = np.reshape(anchor_centers, [-1, 2])
 
     '''
     box_sizes：
     围绕这个点生成9个anchor（每个面积下三个比例的anchor， 共9个）
     '''
-    box_sizes = tf.stack([ws, hs], axis=2)
+    box_sizes = np.stack([ws, hs], axis=2)
     '''
     按照从上像下，从左到右的顺序展开, 与上面的坐标对应
     '''
-    box_sizes = tf.reshape(box_sizes, [-1, 2])
+    box_sizes = np.reshape(box_sizes, [-1, 2])
     '''
     anchors: anchor写成坐标点(xmin, ymin, xmax, ymax)
     按照从上像下，从左到右的顺序(第一个点生成9个anchor， 然后下一个点生成9个anchor, ....直到最后)
     '''
-    anchors = tf.concat([anchor_centers - 0.5*box_sizes,
-                         anchor_centers + 0.5*box_sizes], axis=1)
+    anchors = np.concatenate([anchor_centers - 0.5 * box_sizes,
+                              anchor_centers + 0.5 * box_sizes], axis=1)
     return anchors
+
 
 if __name__ == '__main__':
     base_anchor_size = 256
@@ -178,12 +183,10 @@ if __name__ == '__main__':
     featuremap_width = 3
     stride = 16
     anchors = make_anchors(base_anchor_size, anchor_scales, anchor_ratios,
-                 featuremap_height, featuremap_width,
-                 stride)
+                           featuremap_height, featuremap_width,
+                           stride)
 
     image = np.ones(shape=[800, 800, 3], dtype=np.uint8) * 255
     image = image.astype(np.uint8)
 
-    vis.show_result(image, anchors.numpy())
-    # print(anchors)
-
+    vis.show_result(image, anchors)
